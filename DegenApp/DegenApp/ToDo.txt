@@ -1,0 +1,123 @@
+﻿Started Stockwatch4 on 10/24/2020 (Re-work of StockWatch, which failed due to database corruption)
+Starting DegenApp API on 12/13/2020, UI on 12/25/2020
+
+        //private string GetCurrentUserId()
+        //{
+        //    String userId = "";
+        //    // When auth is complete, use this to get user id
+        //    //string accountID = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+        //    ClaimsPrincipal currUser = this.User;
+        //    ClaimsIdentity claimsIdentity = (ClaimsIdentity)currUser.Identity;
+
+        //    //string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    Claim userClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+        //    if (userClaim != null)
+        //    {
+        //        userId = currUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    }
+
+        //    return userId;
+        //}
+
+
+
+
+
+
+              //private string GetCurrentUserId()
+        //{
+        //    String userId = "";
+       
+
+        //    ClaimsPrincipal currUser = this.User;
+        //    ClaimsIdentity claimsIdentity = (ClaimsIdentity)currUser.Identity;
+
+        //    //string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+    
+        //    return userId;
+        //}
+
+
+
+
+
+
+        //private string GetCurrentUserId()
+        //{
+        //    String userId = "";
+
+        //    ClaimsPrincipal currUser = this.User;
+        //    ClaimsIdentity claimsIdentity = (ClaimsIdentity)currUser.Identity;
+
+        //    Claim userClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+        //    if (userClaim != null)
+        //    {
+        //        userId = currUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //    }
+
+        //    return userId;
+        //}
+
+
+
+
+
+
+
+                private async Task<string> GetCurrentUserIdAsync()
+        {
+            String userId = "";
+            // When auth is complete, use this to get user id
+            //string accountID = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            //_logger.Log(LogLevel.Information, userId);
+            //_logger.Log(LogLevel.Information, User.Identity.Name);
+
+            ClaimsPrincipal currUser = this.User;
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)currUser.Identity;
+
+            //string userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            Claim userClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            User foundUser = await _context.Users.FindAsync(userClaim.Value);
+            if (foundUser == null && userClaim != null)
+            {
+                var newId = currUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+                _context.Add<User>( new Models.User { UserId = newId, Balance=10000 });
+                await _context.SaveChangesAsync();
+            }
+
+            if (userClaim != null)
+            {
+                userId = userClaim.Value;
+                //userId = currUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
+
+            return userId;
+        }
+
+
+
+
+
+
+
+
+
+        this.httpcontext.
+
+
+
+
+        
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(options =>
+            //{
+            //    options.Authority = $"https://{Configuration["Auth0:Domain"]}/";
+            //    options.Audience = Configuration["Auth0:Audience"];
+            //});
